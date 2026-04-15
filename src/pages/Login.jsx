@@ -29,7 +29,7 @@ const Login = () => {
     };
 
     return (
-        <div className="h-screen w-full flex items-center justify-center bg-slate-50 font-outfit relative overflow-hidden">
+        <div className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#0a1d37] to-[#16213e] font-outfit relative overflow-hidden">
             {/* Background Texture/Glow */}
             <div className="absolute inset-0 opacity-20">
                 <div className="absolute top-[20%] left-[20%] w-96 h-96 bg-blue-500 rounded-full blur-[120px]"></div>
@@ -43,7 +43,7 @@ const Login = () => {
                 className="w-full max-w-[440px] p-6 relative z-10 text-center"
             >
 
-                <div className="bg-[#e8ebf2] rounded-[40px] p-12 shadow-2xl space-y-8 border border-white/20">
+                <div className="glass-card p-12 shadow-2xl space-y-8">
                     <div className="flex flex-col items-center">
                         <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white text-4xl shadow-xl shadow-orange-500/30 mb-6 border-4 border-white/50">
                             🕉
