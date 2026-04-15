@@ -74,14 +74,14 @@
 @layer components {
   .glass-card {
     @apply border shadow-[0_8px_32px_0_rgba(31,38,135,0.04)] rounded-3xl backdrop-blur-xl transition-colors duration-300;
-    backgroundColor: var(--bg-card);
-    borderColor: var(--border-card);
+    background-color: var(--bg-card);
+    border-color: var(--border-card);
   }
   
   .glass-sidebar {
     @apply border-r shadow-[10px_0_40px_rgba(0,0,0,0.02)] backdrop-blur-2xl transition-colors duration-300;
-    backgroundColor: var(--bg-sidebar);
-    borderColor: var(--border-card);
+    background-color: var(--bg-sidebar);
+    border-color: var(--border-card);
   }
 
   .btn-primary-gradient {
