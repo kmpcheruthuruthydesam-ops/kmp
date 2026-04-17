@@ -102,7 +102,7 @@ const Layout = () => {
         if (path.includes('/collections')) return t.collections;
         if (path.includes('/expenses')) return t.expenses;
         if (path.includes('/settings')) return t.settings;
-        return 'Temple CRM';
+        return 'Kozhimamparamb Pooram';
     };
 
     return (
