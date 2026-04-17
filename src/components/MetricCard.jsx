@@ -23,8 +23,9 @@ const MetricCard = memo(({ icon, label, value, type = 'orange', allowPrivacy = t
 
     return (
         <motion.div 
-            whileHover={{ y: -4, scale: 1.005 }}
+            whileHover={window.innerWidth > 768 ? { y: -4, scale: 1.005 } : {}}
             whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
             className={`
                 glass-card flex flex-col justify-between h-full transition-all duration-500 group relative overflow-hidden
                 ${large ? 'p-8 gap-8' : 'p-6 gap-4'}

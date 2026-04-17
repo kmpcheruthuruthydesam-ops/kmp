@@ -144,7 +144,7 @@ const Dashboard = () => {
     }, [devoteeData]);
 
     return (
-        <div className="space-y-10 pb-12">
+        <div className="space-y-6 md:space-y-10 pb-12">
             <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}

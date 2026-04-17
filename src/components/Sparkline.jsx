@@ -37,7 +37,7 @@ const Sparkline = memo(({ data, color = '#f97316', width = 120, height = 40 }) =
             <path
                 d={`${pathData} L ${width},${height} L 0,${height} Z`}
                 fill={`url(#gradient-${color})`}
-                className="transition-all duration-1000"
+                className="transition-opacity duration-300"
             />
             
             {/* Main Path */}
@@ -48,7 +48,6 @@ const Sparkline = memo(({ data, color = '#f97316', width = 120, height = 40 }) =
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="transition-all duration-1000"
             />
             
             {/* End Point Glow */}
@@ -57,7 +56,7 @@ const Sparkline = memo(({ data, color = '#f97316', width = 120, height = 40 }) =
                 cy={points[points.length - 1].y}
                 r="3"
                 fill={color}
-                className="animate-pulse"
+                className="opacity-80"
             />
         </svg>
     );
