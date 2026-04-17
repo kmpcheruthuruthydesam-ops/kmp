@@ -19,6 +19,39 @@ const Layout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isAddDevoteeOpen, setIsAddDevoteeOpen] = useState(false);
     const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+    const [deferredPrompt, setDeferredPrompt] = useState(null);
+    const [isInstallable, setIsInstallable] = useState(false);
+
+    useEffect(() => {
+        const handleBeforeInstallPrompt = (e) => {
+            e.preventDefault();
+            setDeferredPrompt(e);
+            setIsInstallable(true);
+            console.log('PWA: beforeinstallprompt event captured');
+        };
+
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+        window.addEventListener('appinstalled', () => {
+            setDeferredPrompt(null);
+            setIsInstallable(false);
+            console.log('PWA: installed successfully');
+        });
+
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        };
+    }, []);
+
+    const handleInstallClick = async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            setIsInstallable(false);
+            setDeferredPrompt(null);
+        }
+    };
 
     // H: global keyboard shortcuts
     useEffect(() => {
@@ -75,7 +108,12 @@ const Layout = () => {
                 )}
             </AnimatePresence>
 
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+            <Sidebar 
+                isOpen={isSidebarOpen} 
+                setIsOpen={setIsSidebarOpen} 
+                isInstallable={isInstallable}
+                onInstall={handleInstallClick}
+            />
             
             <DynamicIsland />
 
