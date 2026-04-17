@@ -73,9 +73,12 @@ const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-md' }) => {
                             <h3 id="modal-title" className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight">{title}</h3>
                             <button
                                 ref={firstFocusRef}
-                                onClick={onClose}
+                                onClick={() => { 
+                                    import('../lib/haptics').then(m => m.Haptics.lightTick());
+                                    onClose(); 
+                                }}
                                 aria-label="Close dialog"
-                                className="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-700 transition-colors"
+                                className="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-700 transition-colors active:scale-90"
                             >
                                 <X size={18} />
                             </button>

@@ -148,6 +148,22 @@
       .glass-card:active {
           transform: scale(0.985);
       }
+      
+      /* Disable blue highlight overlay on mobile */
+      * {
+          -webkit-tap-highlight-color: transparent;
+      }
+      
+      /* Stop mobile text selection on UI elements */
+      button, a, .glass-card, .glass-search-container {
+          user-select: none;
+          -webkit-user-select: none;
+      }
+  }
+
+  .custom-scrollbar {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
   }
 }
 

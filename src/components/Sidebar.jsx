@@ -14,6 +14,7 @@ import {
     Layers
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Haptics } from '../lib/haptics';
 
 const Sidebar = memo(({ isOpen, setIsOpen, isInstallable, onInstall }) => {
     const { t } = useLanguage();
@@ -22,6 +23,7 @@ const Sidebar = memo(({ isOpen, setIsOpen, isInstallable, onInstall }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        Haptics.heavyTap();
         logout();
         navigate('/login');
     };
@@ -95,7 +97,10 @@ const Sidebar = memo(({ isOpen, setIsOpen, isInstallable, onInstall }) => {
                         to={item.path}
                         end={item.path === '/'}
                         aria-current={undefined}
-                        onClick={() => { if (window.innerWidth < 1024) setIsOpen(false); }}
+                        onClick={() => { 
+                            Haptics.lightTick();
+                            if (window.innerWidth < 1024) setIsOpen(false); 
+                        }}
                         className={({ isActive }) => `
                             flex items-center gap-4 px-5 py-3 rounded-2xl font-bold text-sm transition-all duration-300
                             ${isActive

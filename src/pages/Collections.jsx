@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { Printer, Search, FileDown, Calendar, X, BadgeIndianRupee } from 'lucide-react';
 import Receipt from '../components/Receipt';
 import MetricCard from '../components/MetricCard';
+import { Haptics } from '../lib/haptics';
 
 const Collections = () => {
     const { devoteeData, exportCollectionsToCSV, maskValue, debugMode } = useData() || {};
@@ -134,7 +135,11 @@ const Collections = () => {
                             {filters.map(f => (
                                 <button
                                     key={f.id}
-                                    onClick={() => { setTimeFilter(f.id); setCurrentPage(1); }}
+                                    onClick={() => { 
+                                    Haptics.lightTick();
+                                    setTimeFilter(f.id); 
+                                    setCurrentPage(1); 
+                                }}
                                     className={`px-4 py-2 rounded-[18px] text-[11px] font-black uppercase tracking-wider transition-all ${timeFilter === f.id ? 'bg-white text-orange-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                                 >
                                     {f.label}
@@ -233,7 +238,7 @@ const Collections = () => {
                                     </div>
 
                                     <button 
-                                        onClick={() => handlePrint(item)}
+                                        onClick={() => { Haptics.lightTick(); handlePrint(item); }}
                                         className="p-2 text-slate-300 active:text-orange-500"
                                     >
                                         <Printer size={18} />

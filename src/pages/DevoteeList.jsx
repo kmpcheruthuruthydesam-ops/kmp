@@ -8,6 +8,7 @@ import Modal from '../components/Modal';
 import DevoteeForm from '../components/DevoteeForm';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import { Haptics } from '../lib/haptics';
 
 // Fix 4: sortable column header component - Memoized
 const SortHeader = memo(({ label, field, sort, onSort, className = '' }) => {
@@ -148,7 +149,11 @@ const DevoteeList = () => {
                         <select
                             className="bg-white/80 border border-slate-100 rounded-[20px] px-4 py-3 md:py-2 text-[12px] md:text-[13px] font-black text-slate-600 cursor-pointer focus:ring-2 focus:ring-orange-500/20"
                             value={statusFilter}
-                            onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+                            onChange={(e) => { 
+                                Haptics.lightTick();
+                                setStatusFilter(e.target.value); 
+                                setCurrentPage(1); 
+                            }}
                         >
                             <option value="All">{t.all_status}</option>
                             <option value="Paid">{t.paid}</option>
@@ -156,7 +161,7 @@ const DevoteeList = () => {
                             <option value="Nirapara">{t.nirapara}</option>
                         </select>
                         <button
-                            onClick={() => setIsAddModalOpen(true)}
+                            onClick={() => { Haptics.lightTick(); setIsAddModalOpen(true); }}
                             className="flex items-center justify-center gap-1.5 px-4 py-3 md:py-2.5 bg-orange-500 text-white rounded-[22px] font-black text-[12px] md:text-[13px] shadow-lg shadow-orange-200 active:scale-95 transition-all truncate"
                         >
                             <UserPlus size={16} /> <span className="truncate">{t.add_devotee}</span>

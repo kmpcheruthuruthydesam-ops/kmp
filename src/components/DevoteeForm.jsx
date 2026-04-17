@@ -3,6 +3,7 @@ import { useData } from '../context/DataContext';
 import { useLanguage } from '../context/LanguageContext';
 import { UserPlus, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { Haptics } from '../lib/haptics';
 
 const DevoteeForm = ({ devotee, onSuccess }) => {
     const { addDevotee, updateDevotee, getNextDevoteeId } = useData() || {};
@@ -70,9 +71,11 @@ const DevoteeForm = ({ devotee, onSuccess }) => {
         if (devotee) {
             updateDevotee(finalData);
             toast.success(t.record_updated);
+            Haptics.successDouble();
         } else {
             addDevotee(finalData);
             toast.success(t.record_created);
+            Haptics.successDouble();
         }
 
         setTimeout(() => onSuccess?.(), 50);
@@ -153,7 +156,10 @@ const DevoteeForm = ({ devotee, onSuccess }) => {
                                 type="checkbox"
                                 className="peer sr-only"
                                 checked={formData.isNirapara}
-                                onChange={e => setFormData({ ...formData, isNirapara: e.target.checked })}
+                                onChange={e => {
+                                    Haptics.lightTick();
+                                    setFormData({ ...formData, isNirapara: e.target.checked });
+                                }}
                             />
                             <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
                         </div>

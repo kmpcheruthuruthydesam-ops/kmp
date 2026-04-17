@@ -21,6 +21,7 @@ const Layout = () => {
     const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
     const [deferredPrompt, setDeferredPrompt] = useState(null);
     const [isInstallable, setIsInstallable] = useState(false);
+    const [updateAvailable, setUpdateAvailable] = useState(false);
 
     useEffect(() => {
         const handleBeforeInstallPrompt = (e) => {
@@ -38,10 +39,29 @@ const Layout = () => {
             console.log('PWA: installed successfully');
         });
 
+        // PWA: Listen for service worker updates
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(reg => {
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('PWA: New update available');
+                            setUpdateAvailable(true);
+                        }
+                    });
+                });
+            });
+        }
+
         return () => {
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
         };
     }, []);
+
+    const handleUpdate = () => {
+        window.location.reload();
+    };
 
     const handleInstallClick = async () => {
         if (!deferredPrompt) return;
@@ -115,7 +135,10 @@ const Layout = () => {
                 onInstall={handleInstallClick}
             />
             
-            <DynamicIsland />
+            <DynamicIsland 
+                updateAvailable={updateAvailable} 
+                onUpdate={handleUpdate} 
+            />
 
             <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 lg:pl-72 focus:outline-none">
                 <Header title={getTitle()} onMenuClick={() => setIsSidebarOpen(true)} />
@@ -176,19 +199,22 @@ const Layout = () => {
 };
 
 /* ═══ Phase 4: Dynamic Island Component ═══ */
-const DynamicIsland = () => {
+const DynamicIsland = ({ updateAvailable, onUpdate }) => {
     const { islandTip } = useData();
     const [isVisible, setIsVisible] = useState(false);
     const [content, setContent] = useState({ title: 'Jai Mahadeva', type: 'system' });
 
     useEffect(() => {
-        if (islandTip?.show) {
+        if (updateAvailable) {
+            setContent({ title: 'App Update Available', type: 'update' });
+            setIsVisible(true);
+        } else if (islandTip?.show) {
             setContent({ title: islandTip.title, type: islandTip.type });
             setIsVisible(true);
         } else {
             setIsVisible(false);
         }
-    }, [islandTip]);
+    }, [islandTip, updateAvailable]);
 
     return (
         <AnimatePresence>
@@ -198,11 +224,14 @@ const DynamicIsland = () => {
                     initial={{ scale: 0.4, opacity: 0, y: -20, x: '-50%' }}
                     animate={{ scale: 1, opacity: 1, y: 0, x: '-50%' }}
                     exit={{ scale: 0.6, opacity: 0, y: -10, x: '-50%' }}
-                    className="dynamic-island px-6 py-2 rounded-full flex items-center gap-3 pointer-events-none"
+                    onClick={content.type === 'update' ? onUpdate : undefined}
+                    className={`dynamic-island px-6 py-2 rounded-full flex items-center gap-3 transition-colors ${content.type === 'update' ? 'cursor-pointer hover:bg-orange-600 active:scale-95 pointer-events-auto' : 'pointer-events-none'}`}
                     transition={{ type: "spring", stiffness: 450, damping: 28 }}
                 >
-                    <div className={`w-2.5 h-2.5 rounded-full animate-pulse shadow-sm ${content.type === 'error' ? 'bg-rose-500 shadow-rose-500' : 'bg-orange-500 shadow-orange-500'}`} />
-                    <span className="text-white text-[11px] font-black uppercase tracking-[0.25em]">{content.title}</span>
+                    <div className={`w-2.5 h-2.5 rounded-full animate-pulse shadow-sm ${content.type === 'error' ? 'bg-rose-500 shadow-rose-500' : content.type === 'update' ? 'bg-emerald-500 shadow-emerald-500' : 'bg-orange-500 shadow-orange-500'}`} />
+                    <span className="text-white text-[11px] font-black uppercase tracking-[0.25em]">
+                        {content.type === 'update' ? 'TAP TO UPDATE APP' : content.title}
+                    </span>
                 </motion.div>
             )}
         </AnimatePresence>

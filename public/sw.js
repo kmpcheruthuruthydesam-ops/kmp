@@ -1,4 +1,4 @@
-const CACHE_NAME = 'temple-crm-v1';
+const CACHE_NAME = 'temple-crm-v1.0.1'; // Update this to force refresh on all clients
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

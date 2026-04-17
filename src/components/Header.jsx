@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Menu, Phone, MapPin, Eye, EyeOff } from 'lucide-react';
+import { Haptics } from '../lib/haptics';
 
 const Header = memo(({ title, onMenuClick }) => {
     const { language, setLanguage, t } = useLanguage();
@@ -56,6 +57,7 @@ const Header = memo(({ title, onMenuClick }) => {
     }, []);
 
     const handleSelectDevotee = (id) => {
+        Haptics.lightTick();
         navigate(`/profile/${id}`);
         setSearchTerm('');
         setShowResults(false);
@@ -77,6 +79,7 @@ const Header = memo(({ title, onMenuClick }) => {
     };
 
     const clearSearch = useCallback(() => {
+        Haptics.lightTick();
         setSearchTerm('');
         setShowResults(false);
     }, []);
@@ -85,9 +88,9 @@ const Header = memo(({ title, onMenuClick }) => {
         <header className="h-20 px-4 md:px-8 flex items-center justify-between sticky top-0 z-40 bg-slate-50/60 backdrop-blur-md border-b border-white/40">
             <div className="flex items-center gap-4 md:gap-8 flex-1">
                 <button
-                    onClick={onMenuClick}
+                    onClick={() => { Haptics.lightTick(); onMenuClick(); }}
                     aria-label="Open navigation menu"
-                    className="p-2 -ml-2 text-slate-500 hover:text-orange-600 hover:bg-white/50 rounded-xl transition-all lg:hidden"
+                    className="p-2 -ml-2 text-slate-500 hover:text-orange-600 hover:bg-white/50 rounded-xl transition-all lg:hidden active:scale-90"
                 >
                     <Menu size={24} />
                 </button>
@@ -175,9 +178,9 @@ const Header = memo(({ title, onMenuClick }) => {
             <div className="flex items-center gap-4 shrink-0">
                 {/* Mobile Search Toggle */}
                 <button
-                    onClick={() => setIsMobileSearchOpen(true)}
+                    onClick={() => { Haptics.lightTick(); setIsMobileSearchOpen(true); }}
                     aria-label="Open search"
-                    className="p-2.5 text-slate-500 hover:text-orange-500 transition-colors md:hidden"
+                    className="p-2.5 text-slate-500 hover:text-orange-500 transition-colors md:hidden active:scale-90"
                 >
                     <Search size={20} />
                 </button>
@@ -240,7 +243,7 @@ const Header = memo(({ title, onMenuClick }) => {
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={togglePrivacyMode}
+                    onClick={() => { Haptics.lightTick(); togglePrivacyMode(); }}
                     aria-label={privacyMode ? t.disable_privacy : t.enable_privacy}
                     className={`relative p-2.5 bg-white/50 border border-white/60 rounded-xl transition-colors hidden sm:block ${privacyMode ? 'text-orange-600' : 'text-slate-500 hover:text-orange-500'}`}
                 >
